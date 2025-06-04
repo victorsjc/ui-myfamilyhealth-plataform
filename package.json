@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@angular/cdk": "^20.0.1",
+    "@angular/google-maps": "^20.0.1",
+    "@angular/material": "^20.0.1"
+  }
+}
