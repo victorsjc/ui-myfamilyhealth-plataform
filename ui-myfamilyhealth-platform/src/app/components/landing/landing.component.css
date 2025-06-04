@@ -1,13 +1,6 @@
-
 .landing-container {
   background-color: #e8eef0;
   min-height: 100vh;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
 }
 
 /* Header Styles */
@@ -19,99 +12,20 @@
   z-index: 1000;
 }
 
-.header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 20px;
-}
-
-.logo h2 {
-  color: #4ec5d9;
-  font-size: 1.5rem;
+.navbar-brand h2 {
+  color: #4ec5d9 !important;
   font-weight: bold;
 }
 
-.nav ul {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-}
-
-.nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav a:hover {
-  color: #4ec5d9;
-}
-
-.auth-buttons {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-/* Button Styles */
-.btn {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.3s;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.btn-primary {
-  background: linear-gradient(45deg, #4ec5d9, #97dae8);
-  color: white;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(78, 197, 217, 0.3);
-}
-
-.btn-outline {
-  background: transparent;
-  border: 2px solid #4ec5d9;
-  color: #4ec5d9;
-}
-
-.btn-outline:hover {
-  background: #4ec5d9;
-  color: white;
-}
-
-.btn-google {
-  background: white;
-  border: 2px solid #ddd;
-  color: #333;
-}
-
-.btn-google:hover {
-  background: #f5f5f5;
-}
-
-.btn-large {
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-}
-
-.btn-full {
-  width: 100%;
+/* Override Bootstrap primary color to match theme */
+:root {
+  --bs-primary: #4ec5d9;
+  --bs-primary-rgb: 78, 197, 217;
 }
 
 /* Hero Section */
 .hero {
-  background: linear-gradient(135deg, #4ec5d9, #97dae8);
+  background: linear-gradient(135deg, #e8eef0 0%, #f8f9fa 100%);
   padding: 5rem 0;
   color: white;
 }
@@ -180,9 +94,11 @@
   box-shadow: 0 15px 30px rgba(0,0,0,0.1);
 }
 
+/* Feature Icons */
 .feature-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
+  color: #4ec5d9;
 }
 
 .feature-card h3 {
@@ -258,6 +174,15 @@
   color: #666;
 }
 
+/* Pricing Cards */
+.pricing .card {
+  transition: transform 0.3s ease;
+}
+
+.pricing .card:hover {
+  transform: translateY(-5px);
+}
+
 /* Contact Section */
 .contact {
   padding: 5rem 0;
@@ -312,9 +237,23 @@
   border-color: #4ec5d9;
 }
 
+/* Custom button hover effects */
+.btn-primary:hover {
+  background: linear-gradient(45deg, #3db0c5, #7bc9d6);
+  border-color: #3db0c5;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(78, 197, 217, 0.3);
+}
+
+.btn-outline-primary:hover {
+  background: #4ec5d9;
+  border-color: #4ec5d9;
+  transform: translateY(-2px);
+}
+
 /* Footer */
 .footer {
-  background: #333;
+  background: #2c3e50 !important;
   color: white;
   padding: 3rem 0 1rem;
 }
@@ -369,8 +308,17 @@
   margin-right: auto;
 }
 
-/* Responsive Design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
   .header .container {
     flex-direction: column;
     gap: 1rem;
