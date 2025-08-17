@@ -121,7 +121,7 @@ export class DashboardComponent implements AfterViewInit {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const history = this.selectedCard.history;
-    const margin = 40;
+    const margin = 50;
     const chartWidth = canvas.width - 2 * margin;
     const chartHeight = canvas.height - 2 * margin;
 
@@ -131,13 +131,38 @@ export class DashboardComponent implements AfterViewInit {
     const maxValue = Math.max(...values);
     const valueRange = maxValue - minValue || 1;
 
-    // Configurar estilo
-    ctx.strokeStyle = '#4ec5d9';
-    ctx.lineWidth = 2;
-    ctx.fillStyle = '#4ec5d9';
+    // Expandir um pouco o range para melhor visualização
+    const padding = valueRange * 0.1;
+    const chartMin = minValue - padding;
+    const chartMax = maxValue + padding;
+    const chartRange = chartMax - chartMin;
+
+    // Configurar fonte
     ctx.font = '12px Inter';
 
-    // Desenhar eixos
+    // Desenhar linhas de referência horizontais (grid)
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 1;
+    
+    // Calcular linhas de referência (5 linhas)
+    const gridLines = 5;
+    for (let i = 0; i <= gridLines; i++) {
+      const y = margin + (i / gridLines) * chartHeight;
+      const value = chartMax - (i / gridLines) * chartRange;
+      
+      // Desenhar linha horizontal
+      ctx.beginPath();
+      ctx.moveTo(margin, y);
+      ctx.lineTo(margin + chartWidth, y);
+      ctx.stroke();
+      
+      // Label do valor de referência
+      ctx.fillStyle = '#999';
+      ctx.textAlign = 'right';
+      ctx.fillText(Math.round(value).toString(), margin - 5, y + 4);
+    }
+
+    // Desenhar eixos principais
     ctx.strokeStyle = '#e0e0e0';
     ctx.lineWidth = 1;
     
@@ -153,36 +178,54 @@ export class DashboardComponent implements AfterViewInit {
     ctx.lineTo(margin + chartWidth, margin + chartHeight);
     ctx.stroke();
 
-    // Desenhar linha do gráfico
+    // Desenhar linha conectando os valores
     ctx.strokeStyle = '#4ec5d9';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.beginPath();
 
     history.forEach((point: any, index: number) => {
       const x = margin + (index / (history.length - 1)) * chartWidth;
-      const y = margin + chartHeight - ((point.value - minValue) / valueRange) * chartHeight;
+      const y = margin + chartHeight - ((point.value - chartMin) / chartRange) * chartHeight;
 
       if (index === 0) {
         ctx.moveTo(x, y);
       } else {
         ctx.lineTo(x, y);
       }
+    });
+
+    ctx.stroke();
+
+    // Desenhar pontos e labels
+    history.forEach((point: any, index: number) => {
+      const x = margin + (index / (history.length - 1)) * chartWidth;
+      const y = margin + chartHeight - ((point.value - chartMin) / chartRange) * chartHeight;
 
       // Desenhar ponto
       ctx.fillStyle = '#4ec5d9';
       ctx.beginPath();
-      ctx.arc(x, y, 4, 0, 2 * Math.PI);
+      ctx.arc(x, y, 5, 0, 2 * Math.PI);
       ctx.fill();
 
-      // Label da data
+      // Contorno branco do ponto
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Converter data para formato dd/MM/yyyy
+      const dateParts = point.date.split('/');
+      const formattedDate = `${dateParts[0]}/${dateParts[1]}/${dateParts[2]}`;
+
+      // Label da data no eixo X
       ctx.fillStyle = '#666';
       ctx.textAlign = 'center';
-      ctx.fillText(point.date.substring(0, 5), x, margin + chartHeight + 20);
+      ctx.fillText(formattedDate, x, margin + chartHeight + 20);
 
-      // Label do valor
+      // Label do valor acima do ponto
+      ctx.fillStyle = '#333';
+      ctx.font = 'bold 12px Inter';
       ctx.fillText(point.value.toString(), x, y - 10);
+      ctx.font = '12px Inter';
     });
-
-    ctx.stroke();
   }
 }
