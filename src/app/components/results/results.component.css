@@ -17,10 +17,12 @@
 .sidebar {
   width: 250px;
   background: white;
-  box-shadow: 2px 0 4px rgba(0,0,0,0.1);
-  transition: all 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  transition: width 0.3s ease;
   position: fixed;
-  height: 100vh;
+  left: 0;
+  top: 0;
+  bottom: 0;
   z-index: 1000;
 }
 
@@ -29,35 +31,22 @@
 }
 
 .sidebar-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo {
-  font-size: 1.2rem;
-  color: #4ec5d9;
-  font-weight: 500;
-}
-
-.logo strong {
-  font-weight: bold;
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .toggle-btn {
   background: none;
   border: none;
   cursor: pointer;
-  color: #6b7280;
   padding: 0.5rem;
-  border-radius: 6px;
-  transition: background-color 0.2s;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+  color: #6c757d;
 }
 
 .toggle-btn:hover {
-  background: #f3f4f6;
+  background-color: #f8f9fa;
 }
 
 .toggle-btn svg {
@@ -65,47 +54,48 @@
   height: 20px;
 }
 
-.nav-menu {
+.sidebar-nav {
   padding: 1rem 0;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1rem;
+  margin: 0 0.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
-  color: #6b7280;
+  transition: background-color 0.3s;
+  color: #6c757d;
 }
 
 .nav-item:hover {
-  background: #f3f4f6;
+  background-color: #f8f9fa;
+  color: #4ec5d9;
 }
 
 .nav-item.active {
-  background: #eff6ff;
+  background-color: #e8f5f7;
   color: #4ec5d9;
-  border-right: 3px solid #4ec5d9;
 }
 
 .nav-icon {
-  width: 20px;
-  height: 20px;
+  min-width: 24px;
   margin-right: 0.75rem;
 }
 
 .nav-icon svg {
-  width: 100%;
-  height: 100%;
+  width: 20px;
+  height: 20px;
+}
+
+.nav-text {
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 .sidebar.minimized .nav-text {
   display: none;
-}
-
-.sidebar.minimized .nav-item {
-  justify-content: center;
-  padding: 0.75rem;
 }
 
 .sidebar.minimized .nav-icon {
@@ -124,15 +114,84 @@
   margin-left: 70px;
 }
 
-.content-header {
+/* Top Header Styles */
+.top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
-.content-header h1 {
+.top-header h1 {
   color: #333;
   font-size: 1.8rem;
   font-weight: 600;
   margin: 0;
+}
+
+.user-profile {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #4ec5d9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.user-avatar:hover {
+  background-color: #3ab0c4;
+}
+
+.user-avatar svg {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  padding: 0.5rem 0;
+  min-width: 150px;
+  z-index: 1000;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  color: #333;
+  text-decoration: none;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+.content-header {
+  margin-bottom: 2rem;
 }
 
 /* Controls Bar */

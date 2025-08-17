@@ -1,15 +1,14 @@
-
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 interface ResultRequest {
   id: string;
   familyMember: string;
   requestDate: Date;
   processDate: Date | null;
-  status: 'Processando' | 'Concluído com Falhas' | 'Concluído com Sucesso' | 'Rejeitado' | 'Cancelado' | 'Pendente de Análise' | 'Em Análise';
+  status: string;
 }
 
 @Component({
@@ -89,6 +88,8 @@ export class ResultsComponent {
 
   filteredResults: ResultRequest[] = [...this.allResults];
 
+  constructor(private router: Router) {}
+
   toggleSidebar() {
     this.sidebarMinimized = !this.sidebarMinimized;
   }
@@ -103,23 +104,23 @@ export class ResultsComponent {
 
   applyFilters() {
     this.filteredResults = this.allResults.filter(result => {
-      const matchesSearch = !this.searchTerm || 
+      const matchesSearch = !this.searchTerm ||
         result.familyMember.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
+
       const matchesDateRange = this.checkDateRange(result.requestDate);
-      
+
       return matchesSearch && matchesDateRange;
     });
-    
+
     this.showFilterModal = false;
   }
 
   private checkDateRange(date: Date): boolean {
     if (!this.startDate && !this.endDate) return true;
-    
+
     if (this.startDate && date < new Date(this.startDate)) return false;
     if (this.endDate && date > new Date(this.endDate)) return false;
-    
+
     return true;
   }
 
@@ -189,7 +190,7 @@ export class ResultsComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.isDragOver = false;
-    
+
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       this.handleFileSelection(files[0]);
@@ -243,10 +244,10 @@ export class ResultsComponent {
     // Simular upload e processamento
     // Em um cenário real, aqui seria feita a requisição para obter a URL pré-assinada
     // e realizar o upload para AWS S3
-    
+
     // Gerar um novo ID para o resultado
     const newId = 'REQ' + String(this.allResults.length + 1).padStart(3, '0');
-    
+
     // Lista de nomes familiares fictícios para teste
     const familyNames = [
       'Maria Silva Santos',
@@ -260,10 +261,10 @@ export class ResultsComponent {
       'Camila Souza',
       'Rafael Santos'
     ];
-    
+
     // Selecionar um nome aleatório
     const randomName = familyNames[Math.floor(Math.random() * familyNames.length)];
-    
+
     // Criar novo resultado
     const newResult: ResultRequest = {
       id: newId,
