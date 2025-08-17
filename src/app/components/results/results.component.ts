@@ -20,6 +20,7 @@ interface ResultRequest {
 })
 export class ResultsComponent {
   sidebarMinimized = false;
+  showProfileMenu = false;
   searchTerm = '';
   showFilterModal = false;
   showNewResultModal = false;
@@ -92,6 +93,15 @@ export class ResultsComponent {
 
   toggleSidebar() {
     this.sidebarMinimized = !this.sidebarMinimized;
+  }
+
+  toggleProfileMenu() {
+    this.showProfileMenu = !this.showProfileMenu;
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/']);
   }
 
   onSearch() {
