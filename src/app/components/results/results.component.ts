@@ -23,8 +23,17 @@ export class ResultsComponent {
   sidebarMinimized = false;
   searchTerm = '';
   showFilterModal = false;
+  showNewResultModal = false;
+  showSuccessModal = false;
   startDate = '';
   endDate = '';
+  isDragOver = false;
+  selectedFile: File | null = null;
+
+  newResultForm = {
+    labId: '',
+    doctorId: ''
+  };
 
   allResults: ResultRequest[] = [
     {
@@ -145,6 +154,136 @@ export class ResultsComponent {
   }
 
   newResult() {
-    console.log('Novo resultado clicado');
+    this.showNewResultModal = true;
+    this.resetForm();
+  }
+
+  closeNewResultModal() {
+    this.showNewResultModal = false;
+    this.resetForm();
+  }
+
+  closeSuccessModal() {
+    this.showSuccessModal = false;
+  }
+
+  resetForm() {
+    this.newResultForm = {
+      labId: '',
+      doctorId: ''
+    };
+    this.selectedFile = null;
+    this.isDragOver = false;
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = true;
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver = false;
+    
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.handleFileSelection(files[0]);
+    }
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.handleFileSelection(file);
+    }
+  }
+
+  handleFileSelection(file: File) {
+    // Validar tipo de arquivo
+    if (file.type !== 'application/pdf') {
+      alert('Apenas arquivos PDF são permitidos.');
+      return;
+    }
+
+    // Validar tamanho do arquivo (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('O arquivo não pode ser maior que 5MB.');
+      return;
+    }
+
+    this.selectedFile = file;
+  }
+
+  removeFile() {
+    this.selectedFile = null;
+  }
+
+  formatFileSize(bytes: number): string {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+  canSave(): boolean {
+    return this.selectedFile !== null;
+  }
+
+  saveNewResult() {
+    if (!this.canSave()) {
+      return;
+    }
+
+    // Simular upload e processamento
+    // Em um cenário real, aqui seria feita a requisição para obter a URL pré-assinada
+    // e realizar o upload para AWS S3
+    
+    // Gerar um novo ID para o resultado
+    const newId = 'REQ' + String(this.allResults.length + 1).padStart(3, '0');
+    
+    // Lista de nomes familiares fictícios para teste
+    const familyNames = [
+      'Maria Silva Santos',
+      'João Pedro Oliveira',
+      'Ana Carolina Ferreira',
+      'Carlos Eduardo Lima',
+      'Fernanda Costa',
+      'Roberto Almeida',
+      'Juliana Rodrigues',
+      'Marcos Antonio',
+      'Camila Souza',
+      'Rafael Santos'
+    ];
+    
+    // Selecionar um nome aleatório
+    const randomName = familyNames[Math.floor(Math.random() * familyNames.length)];
+    
+    // Criar novo resultado
+    const newResult: ResultRequest = {
+      id: newId,
+      familyMember: randomName,
+      requestDate: new Date(),
+      processDate: null,
+      status: 'Processando'
+    };
+
+    // Adicionar à lista
+    this.allResults.unshift(newResult);
+    this.filteredResults = [...this.allResults];
+
+    // Fechar modal e mostrar sucesso
+    this.showNewResultModal = false;
+    this.showSuccessModal = true;
+  }
+
+  returnToResults() {
+    this.showSuccessModal = false;
+    this.resetForm();
   }
 }
