@@ -1,5 +1,5 @@
 
-.dashboard-container {
+.profile-container {
   display: flex;
   min-height: 100vh;
   background-color: #f8f9fa;
@@ -178,111 +178,96 @@
   background-color: #f8f9fa;
 }
 
+.dropdown-item.active {
+  background-color: #e8f5f7;
+  color: #4ec5d9;
+}
+
 .dropdown-item svg {
   width: 16px;
   height: 16px;
 }
 
-.content-header {
-  margin-bottom: 2rem;
+/* Profile Content Styles */
+.profile-content {
+  max-width: 800px;
 }
 
-/* Health Cards Styles */
-.health-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  max-width: 1200px;
-}
-
-.health-card {
+.profile-section {
   background: white;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  cursor: pointer;
 }
 
-.health-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-}
-
-.card-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: bold;
+.section-title {
   color: #333;
-  margin: 0 0 0.5rem 0;
-}
-
-.card-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.card-description {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: #9ca3af;
-  flex: 1;
-}
-
-.card-value {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: #4ec5d9;
+  font-size: 1.3rem;
   font-weight: 600;
-  margin-left: 1rem;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .sidebar {
-    transform: translateX(-100%);
-  }
-  
-  .sidebar.minimized {
-    transform: translateX(-100%);
-  }
-  
-  .main-content {
-    margin-left: 0;
-  }
-  
-  .main-content.sidebar-minimized {
-    margin-left: 0;
-  }
-  
-  .health-cards-container {
-    grid-template-columns: 1fr;
-  }
-  
-  .content-header h1 {
-    font-size: 1.5rem;
-  }
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 480px) {
-  .main-content {
-    padding: 1rem;
-  }
-  
-  .health-card {
-    padding: 1rem;
-  }
-  
-  .card-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.25rem;
-  }
-  
-  .card-value {
-    margin-left: 0;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4ec5d9;
+}
+
+.form-input:read-only {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+.disabled-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.disabled-text {
+  color: #6c757d;
+  font-style: italic;
+  margin: 0;
+}
+
+.delete-account-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.delete-account-btn:hover {
+  background-color: #c82333;
 }
 
 /* Modal Styles */
@@ -303,7 +288,7 @@
   background: white;
   border-radius: 12px;
   padding: 0;
-  max-width: 600px;
+  max-width: 500px;
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
@@ -320,7 +305,7 @@
 .modal-header h2 {
   margin: 0;
   color: #333;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 600;
 }
 
@@ -347,107 +332,120 @@
   padding: 1.5rem;
 }
 
-.detail-info {
+.warning-content, .success-content {
+  text-align: center;
   margin-bottom: 2rem;
 }
 
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #f8f9fa;
+.warning-icon, .success-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  color: #ffc107;
 }
 
-.info-row:last-child {
-  border-bottom: none;
+.success-icon {
+  color: #28a745;
 }
 
-.info-label {
-  font-weight: 500;
-  color: #333;
-}
-
-.info-value {
-  color: #6c757d;
-}
-
-.current-value {
-  color: #4ec5d9;
-  font-weight: 600;
-}
-
-.history-section {
-  border-top: 1px solid #e9ecef;
-  padding-top: 1.5rem;
-}
-
-.history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.history-label {
-  font-weight: 500;
-  color: #333;
-}
-
-/* Switch Styles */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #4ec5d9;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-.chart-container {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-}
-
-.chart-container canvas {
+.warning-icon svg, .success-icon svg {
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+.warning-content h3, .success-content h3 {
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.warning-content p, .success-content p {
+  color: #6c757d;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-cancel, .btn-confirm-delete, .btn-primary {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
+
+.btn-confirm-delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-confirm-delete:hover {
+  background-color: #c82333;
+}
+
+.btn-primary {
+  background-color: #4ec5d9;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #3ab0c4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.minimized {
+    transform: translateX(-100%);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .main-content.sidebar-minimized {
+    margin-left: 0;
+  }
+  
+  .top-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .profile-section {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+  }
+  
+  .profile-section {
+    padding: 1rem;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
 }
