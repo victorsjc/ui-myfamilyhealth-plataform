@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 interface ResultRequest {
   id: string;
@@ -14,7 +15,7 @@ interface ResultRequest {
 @Component({
   selector: 'app-results',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './results.component.html',
   styleUrl: './results.component.css'
 })
