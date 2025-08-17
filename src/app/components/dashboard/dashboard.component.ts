@@ -392,4 +392,9 @@ export class DashboardComponent implements AfterViewInit {
     }
     return pages;
   }
+
+  // Método auxiliar para acessar Math no template
+  mathMin(a: number, b: number): number {
+    return Math.min(a, b);
+  }
 }

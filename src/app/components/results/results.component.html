@@ -8,7 +8,7 @@
         </svg>
       </button>
     </div>
-    
+
     <nav class="sidebar-nav">
       <div class="nav-item" routerLink="/dashboard">
         <div class="nav-icon">
@@ -21,7 +21,7 @@
         </div>
         <span class="nav-text" *ngIf="!sidebarMinimized">Dashboard</span>
       </div>
-      
+
       <div class="nav-item active">
         <div class="nav-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +66,7 @@
         </div>
       </div>
     </header>
-    
+
     <div class="content-header">
     </div>
 
@@ -138,7 +138,7 @@
           (click)="previousPage()">
           Anterior
         </button>
-        
+
         <button 
           *ngFor="let page of getPageNumbers()"
           class="pagination-btn"
@@ -146,7 +146,7 @@
           (click)="goToPage(page)">
           {{ page }}
         </button>
-        
+
         <button 
           class="pagination-btn"
           [disabled]="currentPage === totalPages"
@@ -154,9 +154,9 @@
           Próximo
         </button>
       </div>
-      
+
       <div class="pagination-info">
-        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, filteredResults.length) }} de {{ filteredResults.length }} resultados
+        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ mathMin(currentPage * itemsPerPage, filteredResults.length) }} de {{ filteredResults.length }} resultados
       </div>
     </div>
 
