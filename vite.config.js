@@ -1,12 +1,13 @@
 // vite.config.js
-import { defineConfig } from 'vite';
+import { defineConfig } from "vite";
 
 export default defineConfig({
   server: {
     allowedHosts: [
-      '3c383de6-6b4e-4f4d-8c90-8bf4278b21c2-00-1gsepyxp5kbxw.picard.replit.dev'
+      "3c383de6-6b4e-4f4d-8c90-8bf4278b21c2-00-1gsepyxp5kbxw.picard.replit.dev",
+      "2e25592d-2911-43e4-ae62-3dbb813fa4fa-00-1pms8yi67uv71.riker.replit.dev",
     ],
-    host: '0.0.0.0', // Ensure the server is accessible externally
-    port: 5000, // Use port 5000 for development
+    host: "0.0.0.0", // Ensure the server is accessible externally
+    port: 4200, // Use port 5000 for development
   },
 });
