@@ -19,6 +19,8 @@ export class DashboardComponent implements AfterViewInit {
   showCardDetails = false;
   showHistory = false;
   selectedCard: any = null;
+  searchGenetics = '';
+  filteredGeneticsData: any[] = [];
 
   healthCards = [
     {
@@ -65,7 +67,71 @@ export class DashboardComponent implements AfterViewInit {
     }
   ];
 
-  constructor(private router: Router) {}
+  geneticsData = [
+    {
+      condition: 'Vitamina B1 (Tiamina)',
+      genes: [
+        { gene: 'SLC19A2', snp: 'rs2228314', genotype: 'CC', rareAllele: 'C', result: 'Normal' },
+        { gene: 'TPK1', snp: 'rs1801198', genotype: 'CT', rareAllele: 'T', result: 'Médio' }
+      ]
+    },
+    {
+      condition: 'Vitamina B12',
+      genes: [
+        { gene: 'TCN2', snp: 'rs1801198', genotype: 'GG', rareAllele: 'A', result: 'Normal' },
+        { gene: 'FUT2', snp: 'rs602662', genotype: 'AA', rareAllele: 'A', result: 'Alto' },
+        { gene: 'MTHFR', snp: 'rs1801133', genotype: 'CT', rareAllele: 'T', result: 'Médio-Alto' }
+      ]
+    },
+    {
+      condition: 'Vitamina D',
+      genes: [
+        { gene: 'VDR', snp: 'rs2228570', genotype: 'TT', rareAllele: 'T', result: 'Alto' },
+        { gene: 'GC', snp: 'rs4588', genotype: 'GT', rareAllele: 'T', result: 'Médio' },
+        { gene: 'CYP2R1', snp: 'rs10741657', genotype: 'GG', rareAllele: 'A', result: 'Normal' }
+      ]
+    },
+    {
+      condition: 'Folato',
+      genes: [
+        { gene: 'MTHFR', snp: 'rs1801131', genotype: 'AC', rareAllele: 'C', result: 'Médio-Alto' },
+        { gene: 'RFC1', snp: 'rs1051266', genotype: 'GG', rareAllele: 'A', result: 'Normal' }
+      ]
+    },
+    {
+      condition: 'Ferro',
+      genes: [
+        { gene: 'HFE', snp: 'rs1799945', genotype: 'GG', rareAllele: 'C', result: 'Normal' },
+        { gene: 'TMPRSS6', snp: 'rs855791', genotype: 'AG', rareAllele: 'G', result: 'Médio' },
+        { gene: 'TF', snp: 'rs3811647', genotype: 'AA', rareAllele: 'G', result: 'Baixo' }
+      ]
+    },
+    {
+      condition: 'Zinco',
+      genes: [
+        { gene: 'ZIP4', snp: 'rs11076161', genotype: 'TT', rareAllele: 'C', result: 'Normal' },
+        { gene: 'MT1A', snp: 'rs8052394', genotype: 'CT', rareAllele: 'T', result: 'Alto' }
+      ]
+    },
+    {
+      condition: 'Magnésio',
+      genes: [
+        { gene: 'TRPM6', snp: 'rs3750425', genotype: 'AA', rareAllele: 'G', result: 'Normal' },
+        { gene: 'CNNM2', snp: 'rs7965584', genotype: 'GT', rareAllele: 'T', result: 'Médio-Alto' }
+      ]
+    },
+    {
+      condition: 'Cálcio',
+      genes: [
+        { gene: 'CASR', snp: 'rs1801725', genotype: 'AA', rareAllele: 'G', result: 'Normal' },
+        { gene: 'VDR', snp: 'rs731236', genotype: 'CT', rareAllele: 'T', result: 'Médio' }
+      ]
+    }
+  ];
+
+  constructor(private router: Router) {
+    this.filteredGeneticsData = this.getAllGeneticsRecords();
+  }
 
   ngAfterViewInit() {
     // Fechar dropdown ao clicar fora
@@ -144,23 +210,36 @@ export class DashboardComponent implements AfterViewInit {
     ctx.strokeStyle = '#f0f0f0';
     ctx.lineWidth = 1;
     
-    // Calcular linhas de referência (5 linhas)
-    const gridLines = 5;
-    for (let i = 0; i <= gridLines; i++) {
-      const y = margin + (i / gridLines) * chartHeight;
-      const value = chartMax - (i / gridLines) * chartRange;
+    // Calcular valores de referência baseados em incrementos de 5
+    const minRounded = Math.floor(chartMin / 5) * 5;
+    const maxRounded = Math.ceil(chartMax / 5) * 5;
+    const step = 5;
+    
+    for (let value = minRounded; value <= maxRounded; value += step) {
+      const y = margin + chartHeight - ((value - chartMin) / chartRange) * chartHeight;
       
-      // Desenhar linha horizontal
-      ctx.beginPath();
-      ctx.moveTo(margin, y);
-      ctx.lineTo(margin + chartWidth, y);
-      ctx.stroke();
-      
-      // Label do valor de referência
-      ctx.fillStyle = '#999';
-      ctx.textAlign = 'right';
-      ctx.fillText(Math.round(value).toString(), margin - 5, y + 4);
+      if (y >= margin && y <= margin + chartHeight) {
+        // Desenhar linha horizontal
+        ctx.beginPath();
+        ctx.moveTo(margin, y);
+        ctx.lineTo(margin + chartWidth, y);
+        ctx.stroke();
+        
+        // Label do valor de referência
+        ctx.fillStyle = '#999';
+        ctx.textAlign = 'right';
+        ctx.fillText(value.toString(), margin - 5, y + 4);
+      }
     }
+
+    // Adicionar legenda da unidade no eixo Y
+    ctx.fillStyle = '#666';
+    ctx.textAlign = 'center';
+    ctx.save();
+    ctx.translate(15, margin + chartHeight / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(`(${this.selectedCard.unit})`, 0, 0);
+    ctx.restore();
 
     // Desenhar eixos principais
     ctx.strokeStyle = '#e0e0e0';
@@ -227,5 +306,49 @@ export class DashboardComponent implements AfterViewInit {
       ctx.fillText(point.value.toString(), x, y - 10);
       ctx.font = '12px Inter';
     });
+  }
+
+  getAllGeneticsRecords(): any[] {
+    const allRecords: any[] = [];
+    this.geneticsData.forEach(condition => {
+      condition.genes.forEach(gene => {
+        allRecords.push({
+          condition: condition.condition,
+          gene: gene.gene,
+          snp: gene.snp,
+          genotype: gene.genotype,
+          rareAllele: gene.rareAllele,
+          result: gene.result
+        });
+      });
+    });
+    return allRecords;
+  }
+
+  onSearchGenetics() {
+    if (!this.searchGenetics.trim()) {
+      this.filteredGeneticsData = this.getAllGeneticsRecords();
+    } else {
+      this.filteredGeneticsData = this.getAllGeneticsRecords().filter(record =>
+        record.condition.toLowerCase().includes(this.searchGenetics.toLowerCase())
+      );
+    }
+  }
+
+  getResultClass(result: string): string {
+    switch (result) {
+      case 'Normal':
+        return 'result-normal';
+      case 'Médio':
+        return 'result-medio';
+      case 'Médio-Alto':
+        return 'result-medio-alto';
+      case 'Alto':
+        return 'result-alto';
+      case 'Baixo':
+        return 'result-baixo';
+      default:
+        return '';
+    }
   }
 }

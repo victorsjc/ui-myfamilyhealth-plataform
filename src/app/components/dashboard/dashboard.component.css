@@ -285,6 +285,153 @@
   }
 }
 
+/* Genetics Section Styles */
+.genetics-section {
+  margin-top: 3rem;
+  max-width: 1200px;
+}
+
+.genetics-title {
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.genetics-search {
+  margin-bottom: 1.5rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  background: white;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4ec5d9;
+  box-shadow: 0 0 0 3px rgba(78, 197, 217, 0.1);
+}
+
+.genetics-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.genetics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+}
+
+.genetics-table th {
+  background: #f8fafc;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.genetics-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #6b7280;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.genetics-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.genetics-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Result Badge Styles */
+.result-badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.result-normal {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.result-medio {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.result-medio-alto {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.result-alto {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.result-baixo {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+/* Responsive Design for Genetics Table */
+@media (max-width: 768px) {
+  .genetics-table-container {
+    overflow-x: auto;
+  }
+  
+  .genetics-table {
+    min-width: 600px;
+  }
+  
+  .genetics-table th,
+  .genetics-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .result-badge {
+    min-width: 70px;
+    font-size: 0.75rem;
+  }
+}
+
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
