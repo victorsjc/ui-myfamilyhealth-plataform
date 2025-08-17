@@ -1,0 +1,55 @@
+
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.minimized]="sidebarMinimized">
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h18m-9-9l9 9-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-item active">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Dashboard</span>
+      </div>
+      
+      <div class="nav-item">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 11H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M13 6h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 15h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Meus resultados</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" [class.sidebar-minimized]="sidebarMinimized">
+    <div class="content-header">
+      <h1>Dashboard - Últimas Informações de Saúde</h1>
+    </div>
+    
+    <div class="health-cards-container">
+      <div class="health-card" *ngFor="let card of healthCards">
+        <h3 class="card-title">{{ card.name }}</h3>
+        <div class="card-content">
+          <span class="card-description">{{ card.description }}</span>
+          <span class="card-value">{{ card.value }} {{ card.unit }}</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
