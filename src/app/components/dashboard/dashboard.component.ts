@@ -21,6 +21,10 @@ export class DashboardComponent implements AfterViewInit {
   selectedCard: any = null;
   searchGenetics = '';
   filteredGeneticsData: any[] = [];
+  geneticsCurrentPage = 1;
+  geneticsItemsPerPage = 10;
+  geneticsTotalPages = 0;
+  geneticsDisplayedData: any[] = [];
 
   healthCards = [
     {
@@ -131,6 +135,7 @@ export class DashboardComponent implements AfterViewInit {
 
   constructor(private router: Router) {
     this.filteredGeneticsData = this.getAllGeneticsRecords();
+    this.updateGeneticsPagination();
   }
 
   ngAfterViewInit() {
@@ -333,6 +338,8 @@ export class DashboardComponent implements AfterViewInit {
         record.condition.toLowerCase().includes(this.searchGenetics.toLowerCase())
       );
     }
+    this.geneticsCurrentPage = 1;
+    this.updateGeneticsPagination();
   }
 
   getResultClass(result: string): string {
@@ -350,5 +357,39 @@ export class DashboardComponent implements AfterViewInit {
       default:
         return '';
     }
+  }
+
+  updateGeneticsPagination() {
+    this.geneticsTotalPages = Math.ceil(this.filteredGeneticsData.length / this.geneticsItemsPerPage);
+    const startIndex = (this.geneticsCurrentPage - 1) * this.geneticsItemsPerPage;
+    const endIndex = startIndex + this.geneticsItemsPerPage;
+    this.geneticsDisplayedData = this.filteredGeneticsData.slice(startIndex, endIndex);
+  }
+
+  goToGeneticsPage(page: number) {
+    if (page >= 1 && page <= this.geneticsTotalPages) {
+      this.geneticsCurrentPage = page;
+      this.updateGeneticsPagination();
+    }
+  }
+
+  previousGeneticsPage() {
+    this.goToGeneticsPage(this.geneticsCurrentPage - 1);
+  }
+
+  nextGeneticsPage() {
+    this.goToGeneticsPage(this.geneticsCurrentPage + 1);
+  }
+
+  getGeneticsPageNumbers(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+    const startPage = Math.max(1, this.geneticsCurrentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(this.geneticsTotalPages, startPage + maxVisiblePages - 1);
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 }

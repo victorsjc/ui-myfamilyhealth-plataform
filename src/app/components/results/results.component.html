@@ -114,7 +114,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let result of filteredResults">
+          <tr *ngFor="let result of paginatedResults">
             <td>{{ result.id }}</td>
             <td [title]="result.familyMember">{{ truncateName(result.familyMember) }}</td>
             <td>{{ formatDate(result.requestDate) }}</td>
@@ -127,6 +127,37 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination">
+        <button 
+          class="pagination-btn" 
+          [disabled]="currentPage === 1"
+          (click)="previousPage()">
+          Anterior
+        </button>
+        
+        <button 
+          *ngFor="let page of getPageNumbers()"
+          class="pagination-btn"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+        
+        <button 
+          class="pagination-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()">
+          Próximo
+        </button>
+      </div>
+      
+      <div class="pagination-info">
+        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ Math.min(currentPage * itemsPerPage, filteredResults.length) }} de {{ filteredResults.length }} resultados
+      </div>
     </div>
 
     <!-- Filter Modal -->

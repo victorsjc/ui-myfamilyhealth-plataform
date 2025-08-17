@@ -35,6 +35,10 @@ export class ResultsComponent {
     doctorId: ''
   };
 
+  currentPage = 1;
+  itemsPerPage = 5;
+  totalPages = 0;
+
   allResults: ResultRequest[] = [
     {
       id: 'REQ001',
@@ -89,7 +93,9 @@ export class ResultsComponent {
 
   filteredResults: ResultRequest[] = [...this.allResults];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.updatePagination();
+  }
 
   toggleSidebar() {
     this.sidebarMinimized = !this.sidebarMinimized;
@@ -122,6 +128,8 @@ export class ResultsComponent {
       return matchesSearch && matchesDateRange;
     });
 
+    this.currentPage = 1;
+    this.updatePagination();
     this.showFilterModal = false;
   }
 
@@ -139,6 +147,8 @@ export class ResultsComponent {
     this.endDate = '';
     this.searchTerm = '';
     this.filteredResults = [...this.allResults];
+    this.currentPage = 1;
+    this.updatePagination();
     this.showFilterModal = false;
   }
 
@@ -287,6 +297,7 @@ export class ResultsComponent {
     // Adicionar à lista
     this.allResults.unshift(newResult);
     this.filteredResults = [...this.allResults];
+    this.updatePagination();
 
     // Fechar modal e mostrar sucesso
     this.showNewResultModal = false;
@@ -296,5 +307,41 @@ export class ResultsComponent {
   returnToResults() {
     this.showSuccessModal = false;
     this.resetForm();
+  }
+
+  updatePagination() {
+    this.totalPages = Math.ceil(this.filteredResults.length / this.itemsPerPage);
+  }
+
+  get paginatedResults(): ResultRequest[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.filteredResults.slice(startIndex, endIndex);
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  previousPage() {
+    this.goToPage(this.currentPage - 1);
+  }
+
+  nextPage() {
+    this.goToPage(this.currentPage + 1);
+  }
+
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+    const maxVisiblePages = 5;
+    const startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+    const endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 }

@@ -113,7 +113,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of filteredGeneticsData">
+            <tr *ngFor="let record of geneticsDisplayedData">
               <td>{{ record.condition }}</td>
               <td>{{ record.gene }}</td>
               <td>{{ record.snp }}</td>
@@ -127,6 +127,37 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- Paginação Genéticos -->
+      <div class="pagination-container" *ngIf="geneticsTotalPages > 1">
+        <div class="pagination">
+          <button 
+            class="pagination-btn" 
+            [disabled]="geneticsCurrentPage === 1"
+            (click)="previousGeneticsPage()">
+            Anterior
+          </button>
+          
+          <button 
+            *ngFor="let page of getGeneticsPageNumbers()"
+            class="pagination-btn"
+            [class.active]="page === geneticsCurrentPage"
+            (click)="goToGeneticsPage(page)">
+            {{ page }}
+          </button>
+          
+          <button 
+            class="pagination-btn"
+            [disabled]="geneticsCurrentPage === geneticsTotalPages"
+            (click)="nextGeneticsPage()">
+            Próximo
+          </button>
+        </div>
+        
+        <div class="pagination-info">
+          Mostrando {{ (geneticsCurrentPage - 1) * geneticsItemsPerPage + 1 }} - {{ Math.min(geneticsCurrentPage * geneticsItemsPerPage, filteredGeneticsData.length) }} de {{ filteredGeneticsData.length }} registros
+        </div>
       </div>
     </section>
   </main>
