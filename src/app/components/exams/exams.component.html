@@ -1,0 +1,323 @@
+
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.minimized]="sidebarMinimized">
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h18m-9-9l9 9-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item" routerLink="/dashboard">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Dashboard</span>
+      </div>
+
+      <div class="nav-item active">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 11H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M13 6h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 15h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Meus exames</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" [class.sidebar-minimized]="sidebarMinimized">
+    <!-- Header com perfil -->
+    <header class="top-header">
+      <h1>Meus Exames</h1>
+      <div class="user-profile" (click)="toggleProfileMenu()">
+        <div class="user-avatar">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="profile-dropdown" *ngIf="showProfileMenu">
+          <div class="dropdown-item" routerLink="/perfil">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Meu Perfil
+          </div>
+          <div class="dropdown-item" (click)="logout()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sair
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content-header">
+    </div>
+
+    <!-- Search and Filter Bar -->
+    <div class="controls-bar">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <input 
+            type="text" 
+            placeholder="Pesquisar por membro da família..." 
+            [(ngModel)]="searchTerm"
+            (input)="onSearch()"
+            class="search-input">
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button class="filter-btn" (click)="toggleFilterModal()">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Filtro
+        </button>
+
+        <button class="new-result-btn" (click)="newExam()">
+          Novo Exame
+        </button>
+      </div>
+    </div>
+
+    <!-- Exams Table -->
+    <div class="table-container">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Membro da Família</th>
+            <th>Data de Solicitação</th>
+            <th>Data de Processamento</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let exam of paginatedExams">
+            <td>{{ exam.id }}</td>
+            <td [title]="exam.familyMember">{{ truncateName(exam.familyMember) }}</td>
+            <td>{{ formatDate(exam.requestDate) }}</td>
+            <td>{{ formatDate(exam.processDate) }}</td>
+            <td>
+              <span class="status-badge" [class]="getStatusClass(exam.status)">
+                {{ exam.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination">
+        <button 
+          class="pagination-btn" 
+          [disabled]="currentPage === 1"
+          (click)="previousPage()">
+          Anterior
+        </button>
+
+        <button 
+          *ngFor="let page of getPageNumbers()"
+          class="pagination-btn"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)">
+          {{ page }}
+        </button>
+
+        <button 
+          class="pagination-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="nextPage()">
+          Próximo
+        </button>
+      </div>
+
+      <div class="pagination-info">
+        Mostrando {{ (currentPage - 1) * itemsPerPage + 1 }} - {{ mathMin(currentPage * itemsPerPage, filteredExams.length) }} de {{ filteredExams.length }} exames
+      </div>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="filter-modal-overlay" *ngIf="showFilterModal" (click)="toggleFilterModal()">
+      <div class="filter-modal" (click)="$event.stopPropagation()">
+        <h3>Filtros</h3>
+
+        <div class="filter-group">
+          <label>Período de Solicitação:</label>
+          <div class="date-inputs">
+            <input 
+              type="date" 
+              [(ngModel)]="startDate"
+              placeholder="Data inicial"
+              class="date-input">
+            <span>até</span>
+            <input 
+              type="date" 
+              [(ngModel)]="endDate"
+              placeholder="Data final"
+              class="date-input">
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button class="clear-btn" (click)="clearFilters()">Limpar</button>
+          <button class="apply-btn" (click)="applyFilters()">Aplicar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Exam Modal -->
+    <div class="new-result-modal-overlay" *ngIf="showNewExamModal" (click)="closeNewExamModal()">
+      <div class="new-result-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>Novo Exame</h2>
+          <button class="close-btn" (click)="closeNewExamModal()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-content">
+          <!-- Seção 1: Cadastro -->
+          <div class="form-section">
+            <h3 class="section-title">Cadastro</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="labId">ID Laboratório</label>
+                <div class="input-with-icon">
+                  <input 
+                    type="text" 
+                    id="labId"
+                    [(ngModel)]="newExamForm.labId"
+                    maxlength="150"
+                    placeholder="Digite o ID do laboratório"
+                    class="form-input">
+                  <button class="search-icon-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                      <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="doctorId">ID Médico</label>
+                <div class="input-with-icon">
+                  <input 
+                    type="text" 
+                    id="doctorId"
+                    [(ngModel)]="newExamForm.doctorId"
+                    maxlength="150"
+                    placeholder="Digite o ID do médico"
+                    class="form-input">
+                  <button class="search-icon-btn" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                      <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Seção 2: Documentos -->
+          <div class="form-section">
+            <h3 class="section-title">Documentos</h3>
+            <div class="upload-area" 
+                 [class.dragover]="isDragOver"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)"
+                 (click)="fileInput.click()">
+              <div class="upload-content">
+                <div class="upload-icon">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <p class="upload-text">Clique aqui ou arraste um arquivo PDF</p>
+                <span class="upload-hint">Máximo 5MB</span>
+              </div>
+              <input 
+                type="file" 
+                #fileInput
+                accept=".pdf"
+                (change)="onFileSelected($event)"
+                style="display: none;">
+            </div>
+
+            <!-- Lista de arquivos selecionados -->
+            <div class="selected-files" *ngIf="selectedFile">
+              <div class="file-item">
+                <div class="file-info">
+                  <svg class="file-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <div class="file-details">
+                    <span class="file-name">{{ selectedFile.name }}</span>
+                    <span class="file-size">{{ formatFileSize(selectedFile.size) }}</span>
+                  </div>
+                </div>
+                <button class="remove-file-btn" (click)="removeFile()">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ações do Modal -->
+        <div class="modal-actions">
+          <button class="cancel-btn" (click)="closeNewExamModal()">Cancelar</button>
+          <button class="save-btn" [disabled]="!canSave()" (click)="saveNewExam()">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal-overlay" *ngIf="showSuccessModal" (click)="closeSuccessModal()">
+      <div class="success-modal" (click)="$event.stopPropagation()">
+        <div class="success-content">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="22,4 12,14.01 9,11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Sucesso!</h3>
+          <p>Solicitação do pedido de importação dos exames médicos realizada com sucesso.</p>
+          <button class="return-btn" (click)="returnToExams()">Retornar à Tela Inicial</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
