@@ -67,7 +67,7 @@ export class ExamsComponent {
       familyMember: 'Ana Beatriz Costa e Silva Ferreira',
       requestDate: new Date('2024-01-12T14:45:00'),
       processDate: new Date('2024-01-12T18:30:00'),
-      status: 'Rejeitado'
+      status: 'Inválido'
     },
     {
       id: 'REQ005',
@@ -167,7 +167,7 @@ export class ExamsComponent {
       'Processando': 'status-processing',
       'Concluído com Falhas': 'status-failed',
       'Concluído com Sucesso': 'status-success',
-      'Rejeitado': 'status-rejected',
+      'Inválido': 'status-rejected',
       'Cancelado': 'status-cancelled',
       'Pendente de Análise': 'status-pending',
       'Em Análise': 'status-analyzing'
@@ -349,5 +349,9 @@ export class ExamsComponent {
   // Método auxiliar para acessar Math no template
   mathMin(a: number, b: number): number {
     return Math.min(a, b);
+  }
+
+  viewExamDetails(examId: string) {
+    this.router.navigate(['/exames', examId]);
   }
 }

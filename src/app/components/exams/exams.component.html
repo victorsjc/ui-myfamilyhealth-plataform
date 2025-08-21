@@ -40,7 +40,7 @@
             <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
-        <span class="nav-text" *ngIf="!sidebarMinimized">Meus exames</span>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Gestão de Exames</span>
       </div>
     </nav>
   </aside>
@@ -49,7 +49,7 @@
   <main class="main-content" [class.sidebar-minimized]="sidebarMinimized">
     <!-- Header com perfil -->
     <header class="top-header">
-      <h1>Meus Exames</h1>
+      <h1>Gestão de Exames</h1>
       <div class="user-profile" (click)="toggleProfileMenu()">
         <div class="user-avatar">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -121,6 +121,7 @@
             <th>Data de Solicitação</th>
             <th>Data de Processamento</th>
             <th>Status</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -133,6 +134,11 @@
               <span class="status-badge" [class]="getStatusClass(exam.status)">
                 {{ exam.status }}
               </span>
+            </td>
+            <td>
+              <button class="details-btn" (click)="viewExamDetails(exam.id)">
+                Ver Detalhes
+              </button>
             </td>
           </tr>
         </tbody>

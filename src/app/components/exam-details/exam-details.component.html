@@ -1,0 +1,177 @@
+
+<div class="exam-details-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.minimized]="sidebarMinimized">
+    <div class="sidebar-header">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12h18m-9-9l9 9-9 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-item" routerLink="/dashboard">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Dashboard</span>
+      </div>
+
+      <div class="nav-item" routerLink="/resultados">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 11H7a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M13 6h2a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 15h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Meus resultados</span>
+      </div>
+
+      <div class="nav-item active">
+        <div class="nav-icon">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="nav-text" *ngIf="!sidebarMinimized">Gestão de Exames</span>
+      </div>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" [class.sidebar-minimized]="sidebarMinimized">
+    <!-- Header com perfil -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="back-btn" (click)="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5m7-7l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Voltar
+        </button>
+        <h1>Detalhes do Exame - {{ exam?.id }}</h1>
+      </div>
+      <div class="user-profile" (click)="toggleProfileMenu()">
+        <div class="user-avatar">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="profile-dropdown" *ngIf="showProfileMenu">
+          <div class="dropdown-item" routerLink="/perfil">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Meu Perfil
+          </div>
+          <div class="dropdown-item" (click)="logout()">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sair
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="exam-details-content" *ngIf="exam">
+      <!-- Informações Básicas -->
+      <div class="details-section">
+        <h2 class="section-title">Informações do Exame</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>ID do Exame:</label>
+            <span>{{ exam.id }}</span>
+          </div>
+          <div class="info-item">
+            <label>Membro da Família:</label>
+            <span>{{ exam.familyMember }}</span>
+          </div>
+          <div class="info-item">
+            <label>Data de Solicitação:</label>
+            <span>{{ formatDate(exam.requestDate) }}</span>
+          </div>
+          <div class="info-item">
+            <label>Data de Processamento:</label>
+            <span>{{ formatDate(exam.processDate) }}</span>
+          </div>
+          <div class="info-item">
+            <label>Status:</label>
+            <span class="status-badge" [class]="getStatusClass(exam.status)">
+              {{ exam.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados do Cadastro -->
+      <div class="details-section">
+        <h2 class="section-title">Dados do Cadastro</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>ID do Médico:</label>
+            <span>{{ exam.doctorId || 'MD001-SP-2024' }}</span>
+          </div>
+          <div class="info-item">
+            <label>ID do Laboratório:</label>
+            <span>{{ exam.labId || 'LAB123-SP-2024' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensagens baseadas no Status -->
+      <div class="details-section" *ngIf="getStatusMessage()">
+        <h2 class="section-title">Status</h2>
+        <div class="status-message" [class]="getStatusMessageClass()">
+          <div class="message-icon">
+            <svg *ngIf="exam.status === 'Concluído com Sucesso'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <polyline points="22,4 12,14.01 9,11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg *ngIf="exam.status === 'Concluído com Falhas'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <line x1="12" y1="8" x2="12" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="12" y1="16" x2="12.01" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <svg *ngIf="exam.status === 'Inválido'" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="message-content">
+            <h3>{{ getStatusTitle() }}</h3>
+            <p>{{ getStatusMessage() }}</p>
+            <button *ngIf="exam.status === 'Concluído com Falhas'" class="retry-btn" (click)="sendForAnalysis()">
+              Enviar para análise
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Motivo da Invalidade (apenas para status Inválido) -->
+      <div class="details-section" *ngIf="exam.status === 'Inválido'">
+        <h2 class="section-title">Motivo da Invalidade</h2>
+        <div class="invalid-reason">
+          <p>{{ getInvalidReason() }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="!exam">
+      <div class="loading-spinner"></div>
+      <p>Carregando detalhes do exame...</p>
+    </div>
+  </main>
+</div>
