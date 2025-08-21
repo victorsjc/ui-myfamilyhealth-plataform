@@ -1,14 +1,23 @@
+
 import { Component, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
-interface ResultRequest {
+interface ExamResult {
   id: string;
-  familyMember: string;
-  requestDate: Date;
-  processDate: Date | null;
+  examName: string;
+  value: number;
+  unit: string;
+  referenceRange: string;
   status: string;
+  date: Date;
+  method: string;
+  showHistory?: boolean;
+  history?: Array<{
+    date: Date;
+    value: number;
+  }>;
 }
 
 @Component({
@@ -18,83 +27,303 @@ interface ResultRequest {
   templateUrl: './results.component.html',
   styleUrl: './results.component.css'
 })
-export class ResultsComponent {
+export class ResultsComponent implements AfterViewInit {
   sidebarMinimized = false;
   showProfileMenu = false;
   searchTerm = '';
   showFilterModal = false;
-  showNewResultModal = false;
-  showSuccessModal = false;
   startDate = '';
   endDate = '';
-  isDragOver = false;
-  selectedFile: File | null = null;
-
-  newResultForm = {
-    labId: '',
-    doctorId: ''
-  };
+  statusFilter = '';
 
   currentPage = 1;
-  itemsPerPage = 5;
+  itemsPerPage = 6;
   totalPages = 0;
 
-  allResults: ResultRequest[] = [
+  allResults: ExamResult[] = [
     {
-      id: 'REQ001',
-      familyMember: 'João Carlos da Silva Santos',
-      requestDate: new Date('2024-01-15T10:30:00'),
-      processDate: new Date('2024-01-15T14:20:00'),
-      status: 'Concluído com Sucesso'
+      id: 'R001',
+      examName: 'Glicose em Jejum',
+      value: 95,
+      unit: 'mg/dL',
+      referenceRange: '70-100',
+      status: 'Normal',
+      date: new Date('2024-01-15'),
+      method: 'Enzimático',
+      history: [
+        { date: new Date('2023-11-15'), value: 88 },
+        { date: new Date('2023-12-20'), value: 92 },
+        { date: new Date('2024-01-15'), value: 95 }
+      ]
     },
     {
-      id: 'REQ002',
-      familyMember: 'Maria Fernanda Oliveira',
-      requestDate: new Date('2024-01-14T09:15:00'),
-      processDate: new Date('2024-01-14T16:45:00'),
-      status: 'Concluído com Falhas'
+      id: 'R002',
+      examName: 'Colesterol Total',
+      value: 220,
+      unit: 'mg/dL',
+      referenceRange: '<200',
+      status: 'Alto',
+      date: new Date('2024-01-14'),
+      method: 'Colorimétrico',
+      history: [
+        { date: new Date('2023-11-10'), value: 205 },
+        { date: new Date('2023-12-18'), value: 215 },
+        { date: new Date('2024-01-14'), value: 220 }
+      ]
     },
     {
-      id: 'REQ003',
-      familyMember: 'Pedro Santos',
-      requestDate: new Date('2024-01-13T11:20:00'),
-      processDate: null,
-      status: 'Processando'
+      id: 'R003',
+      examName: 'Hemoglobina',
+      value: 11.5,
+      unit: 'g/dL',
+      referenceRange: '12.0-16.0',
+      status: 'Baixo',
+      date: new Date('2024-01-13'),
+      method: 'Fotométrico',
+      history: [
+        { date: new Date('2023-10-15'), value: 11.8 },
+        { date: new Date('2023-12-10'), value: 11.6 },
+        { date: new Date('2024-01-13'), value: 11.5 }
+      ]
     },
     {
-      id: 'REQ004',
-      familyMember: 'Ana Beatriz Costa e Silva Ferreira',
-      requestDate: new Date('2024-01-12T14:45:00'),
-      processDate: new Date('2024-01-12T18:30:00'),
-      status: 'Rejeitado'
+      id: 'R004',
+      examName: 'Creatinina',
+      value: 1.8,
+      unit: 'mg/dL',
+      referenceRange: '0.6-1.2',
+      status: 'Crítico',
+      date: new Date('2024-01-12'),
+      method: 'Jaffé Cinético',
+      history: [
+        { date: new Date('2023-09-20'), value: 1.5 },
+        { date: new Date('2023-11-25'), value: 1.7 },
+        { date: new Date('2024-01-12'), value: 1.8 }
+      ]
     },
     {
-      id: 'REQ005',
-      familyMember: 'Carlos Eduardo',
-      requestDate: new Date('2024-01-11T08:10:00'),
-      processDate: null,
-      status: 'Pendente de Análise'
+      id: 'R005',
+      examName: 'Vitamina D',
+      value: 35,
+      unit: 'ng/mL',
+      referenceRange: '30-100',
+      status: 'Normal',
+      date: new Date('2024-01-11'),
+      method: 'Quimioluminescência'
     },
     {
-      id: 'REQ006',
-      familyMember: 'Luiza Fernanda Almeida',
-      requestDate: new Date('2024-01-10T16:30:00'),
-      processDate: null,
-      status: 'Em Análise'
+      id: 'R006',
+      examName: 'TSH',
+      value: 2.5,
+      unit: 'mUI/L',
+      referenceRange: '0.4-4.0',
+      status: 'Normal',
+      date: new Date('2024-01-10'),
+      method: 'Imunoquimioluminescência'
     },
     {
-      id: 'REQ007',
-      familyMember: 'Roberto Silva',
-      requestDate: new Date('2024-01-09T12:15:00'),
-      processDate: new Date('2024-01-09T15:22:00'),
-      status: 'Cancelado'
+      id: 'R007',
+      examName: 'ALT (TGP)',
+      value: 55,
+      unit: 'U/L',
+      referenceRange: '<40',
+      status: 'Alto',
+      date: new Date('2024-01-09'),
+      method: 'Cinético UV'
+    },
+    {
+      id: 'R008',
+      examName: 'Ferro Sérico',
+      value: 45,
+      unit: 'μg/dL',
+      referenceRange: '60-170',
+      status: 'Baixo',
+      date: new Date('2024-01-08'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R009',
+      examName: 'Ureia',
+      value: 35,
+      unit: 'mg/dL',
+      referenceRange: '15-45',
+      status: 'Normal',
+      date: new Date('2024-01-07'),
+      method: 'Enzimático UV'
+    },
+    {
+      id: 'R010',
+      examName: 'Ácido Úrico',
+      value: 7.5,
+      unit: 'mg/dL',
+      referenceRange: '3.5-7.0',
+      status: 'Alto',
+      date: new Date('2024-01-06'),
+      method: 'Enzimático'
+    },
+    {
+      id: 'R011',
+      examName: 'HDL Colesterol',
+      value: 38,
+      unit: 'mg/dL',
+      referenceRange: '>40',
+      status: 'Baixo',
+      date: new Date('2024-01-05'),
+      method: 'Homogêneo'
+    },
+    {
+      id: 'R012',
+      examName: 'LDL Colesterol',
+      value: 160,
+      unit: 'mg/dL',
+      referenceRange: '<100',
+      status: 'Alto',
+      date: new Date('2024-01-04'),
+      method: 'Calculado'
+    },
+    {
+      id: 'R013',
+      examName: 'Triglicerídeos',
+      value: 180,
+      unit: 'mg/dL',
+      referenceRange: '<150',
+      status: 'Alto',
+      date: new Date('2024-01-03'),
+      method: 'Enzimático'
+    },
+    {
+      id: 'R014',
+      examName: 'Proteína C Reativa',
+      value: 8.5,
+      unit: 'mg/L',
+      referenceRange: '<3.0',
+      status: 'Alto',
+      date: new Date('2024-01-02'),
+      method: 'Turbidimétrico'
+    },
+    {
+      id: 'R015',
+      examName: 'Vitamina B12',
+      value: 180,
+      unit: 'pg/mL',
+      referenceRange: '200-900',
+      status: 'Baixo',
+      date: new Date('2024-01-01'),
+      method: 'Quimioluminescência'
+    },
+    {
+      id: 'R016',
+      examName: 'Ácido Fólico',
+      value: 12,
+      unit: 'ng/mL',
+      referenceRange: '3-17',
+      status: 'Normal',
+      date: new Date('2023-12-30'),
+      method: 'Quimioluminescência'
+    },
+    {
+      id: 'R017',
+      examName: 'Ferritina',
+      value: 450,
+      unit: 'ng/mL',
+      referenceRange: '15-150',
+      status: 'Alto',
+      date: new Date('2023-12-29'),
+      method: 'Quimioluminescência'
+    },
+    {
+      id: 'R018',
+      examName: 'Cálcio Total',
+      value: 9.8,
+      unit: 'mg/dL',
+      referenceRange: '8.5-10.5',
+      status: 'Normal',
+      date: new Date('2023-12-28'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R019',
+      examName: 'Magnésio',
+      value: 1.6,
+      unit: 'mg/dL',
+      referenceRange: '1.7-2.2',
+      status: 'Baixo',
+      date: new Date('2023-12-27'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R020',
+      examName: 'Fósforo',
+      value: 4.2,
+      unit: 'mg/dL',
+      referenceRange: '2.5-4.5',
+      status: 'Normal',
+      date: new Date('2023-12-26'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R021',
+      examName: 'Albumina',
+      value: 3.8,
+      unit: 'g/dL',
+      referenceRange: '3.5-5.0',
+      status: 'Normal',
+      date: new Date('2023-12-25'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R022',
+      examName: 'Bilirrubina Total',
+      value: 1.8,
+      unit: 'mg/dL',
+      referenceRange: '<1.2',
+      status: 'Alto',
+      date: new Date('2023-12-24'),
+      method: 'Colorimétrico'
+    },
+    {
+      id: 'R023',
+      examName: 'AST (TGO)',
+      value: 48,
+      unit: 'U/L',
+      referenceRange: '<40',
+      status: 'Alto',
+      date: new Date('2023-12-23'),
+      method: 'Cinético UV'
+    },
+    {
+      id: 'R024',
+      examName: 'Gama GT',
+      value: 65,
+      unit: 'U/L',
+      referenceRange: '<50',
+      status: 'Alto',
+      date: new Date('2023-12-22'),
+      method: 'Cinético'
+    },
+    {
+      id: 'R025',
+      examName: 'Fosfatase Alcalina',
+      value: 95,
+      unit: 'U/L',
+      referenceRange: '40-150',
+      status: 'Normal',
+      date: new Date('2023-12-21'),
+      method: 'Cinético'
     }
   ];
 
-  filteredResults: ResultRequest[] = [...this.allResults];
+  filteredResults: ExamResult[] = [...this.allResults];
 
   constructor(private router: Router) {
     this.updatePagination();
+  }
+
+  ngAfterViewInit() {
+    // Renderizar gráficos após a view ser inicializada
+    setTimeout(() => {
+      this.renderCharts();
+    }, 100);
   }
 
   toggleSidebar() {
@@ -121,11 +350,13 @@ export class ResultsComponent {
   applyFilters() {
     this.filteredResults = this.allResults.filter(result => {
       const matchesSearch = !this.searchTerm ||
-        result.familyMember.toLowerCase().includes(this.searchTerm.toLowerCase());
+        result.examName.toLowerCase().includes(this.searchTerm.toLowerCase());
 
-      const matchesDateRange = this.checkDateRange(result.requestDate);
+      const matchesDateRange = this.checkDateRange(result.date);
 
-      return matchesSearch && matchesDateRange;
+      const matchesStatus = !this.statusFilter || result.status === this.statusFilter;
+
+      return matchesSearch && matchesDateRange && matchesStatus;
     });
 
     this.currentPage = 1;
@@ -145,6 +376,7 @@ export class ResultsComponent {
   clearFilters() {
     this.startDate = '';
     this.endDate = '';
+    this.statusFilter = '';
     this.searchTerm = '';
     this.filteredResults = [...this.allResults];
     this.currentPage = 1;
@@ -152,168 +384,174 @@ export class ResultsComponent {
     this.showFilterModal = false;
   }
 
-  formatDate(date: Date | null): string {
-    if (!date) return '-';
-    return date.toLocaleDateString('pt-BR') + ' ' + date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-  }
-
-  truncateName(name: string): string {
-    return name.length > 25 ? name.substring(0, 25) + '...' : name;
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('pt-BR');
   }
 
   getStatusClass(status: string): string {
     const statusClasses: { [key: string]: string } = {
-      'Processando': 'status-processing',
-      'Concluído com Falhas': 'status-failed',
-      'Concluído com Sucesso': 'status-success',
-      'Rejeitado': 'status-rejected',
-      'Cancelado': 'status-cancelled',
-      'Pendente de Análise': 'status-pending',
-      'Em Análise': 'status-analyzing'
+      'Normal': 'status-normal',
+      'Alto': 'status-alto',
+      'Baixo': 'status-baixo',
+      'Crítico': 'status-critico'
     };
     return statusClasses[status] || '';
   }
 
-  newResult() {
-    this.showNewResultModal = true;
-    this.resetForm();
+  getValueClass(value: number, referenceRange: string): string {
+    // Lógica simplificada para determinar se o valor está dentro da referência
+    const cleanRange = referenceRange.replace(/[<>]/g, '');
+    
+    if (referenceRange.includes('<')) {
+      const maxValue = parseFloat(cleanRange);
+      return value > maxValue ? 'alto' : 'normal';
+    }
+    
+    if (referenceRange.includes('>')) {
+      const minValue = parseFloat(cleanRange);
+      return value < minValue ? 'baixo' : 'normal';
+    }
+    
+    if (referenceRange.includes('-')) {
+      const [min, max] = cleanRange.split('-').map(v => parseFloat(v.trim()));
+      if (value < min) return 'baixo';
+      if (value > max) return 'alto';
+      return 'normal';
+    }
+    
+    return 'normal';
   }
 
-  closeNewResultModal() {
-    this.showNewResultModal = false;
-    this.resetForm();
-  }
-
-  closeSuccessModal() {
-    this.showSuccessModal = false;
-  }
-
-  resetForm() {
-    this.newResultForm = {
-      labId: '',
-      doctorId: ''
-    };
-    this.selectedFile = null;
-    this.isDragOver = false;
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    this.isDragOver = true;
-  }
-
-  onDragLeave(event: DragEvent) {
-    event.preventDefault();
-    this.isDragOver = false;
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    this.isDragOver = false;
-
-    const files = event.dataTransfer?.files;
-    if (files && files.length > 0) {
-      this.handleFileSelection(files[0]);
+  toggleHistory(result: ExamResult) {
+    if (result.showHistory) {
+      setTimeout(() => {
+        this.renderChart(result);
+      }, 100);
     }
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.handleFileSelection(file);
+  showResultDetails(result: ExamResult) {
+    // Aqui poderia abrir um modal com detalhes completos do resultado
+    console.log('Mostrando detalhes do resultado:', result);
+  }
+
+  renderCharts() {
+    this.paginatedResults.forEach(result => {
+      if (result.showHistory && result.history) {
+        this.renderChart(result);
+      }
+    });
+  }
+
+  renderChart(result: ExamResult) {
+    if (!result.history || result.history.length === 0) return;
+
+    const canvas = document.getElementById(`chart-${result.id}`) as HTMLCanvasElement;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Limpar canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const history = result.history.slice(-3); // Últimos 3 valores
+    const padding = 30;
+    const chartWidth = canvas.width - 2 * padding;
+    const chartHeight = canvas.height - 2 * padding;
+
+    // Encontrar valores mínimo e máximo para escala
+    const values = history.map(h => h.value);
+    const minValue = Math.min(...values) * 0.9;
+    const maxValue = Math.max(...values) * 1.1;
+
+    // Configurar escala Y com valores de referência de 5 em 5
+    const yMin = Math.floor(minValue / 5) * 5;
+    const yMax = Math.ceil(maxValue / 5) * 5;
+    const yRange = yMax - yMin;
+
+    // Desenhar linhas de referência horizontais (cinza claro)
+    ctx.strokeStyle = '#e5e7eb';
+    ctx.lineWidth = 1;
+    for (let i = yMin; i <= yMax; i += 5) {
+      const y = padding + (yMax - i) * chartHeight / yRange;
+      ctx.beginPath();
+      ctx.moveTo(padding, y);
+      ctx.lineTo(padding + chartWidth, y);
+      ctx.stroke();
+      
+      // Labels do eixo Y
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '10px Inter';
+      ctx.textAlign = 'right';
+      ctx.fillText(i.toString(), padding - 5, y + 3);
     }
-  }
 
-  handleFileSelection(file: File) {
-    // Validar tipo de arquivo
-    if (file.type !== 'application/pdf') {
-      alert('Apenas arquivos PDF são permitidos.');
-      return;
+    // Labels do eixo Y com unidade
+    ctx.fillStyle = '#374151';
+    ctx.font = '12px Inter';
+    ctx.textAlign = 'center';
+    ctx.save();
+    ctx.translate(15, padding + chartHeight / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText(`Valores (${result.unit})`, 0, 0);
+    ctx.restore();
+
+    // Desenhar linha conectando os valores
+    if (history.length > 1) {
+      ctx.strokeStyle = '#4ec5d9';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      
+      history.forEach((point, index) => {
+        const x = padding + (index * chartWidth) / (history.length - 1);
+        const y = padding + (yMax - point.value) * chartHeight / yRange;
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+      ctx.stroke();
     }
 
-    // Validar tamanho do arquivo (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('O arquivo não pode ser maior que 5MB.');
-      return;
-    }
-
-    this.selectedFile = file;
-  }
-
-  removeFile() {
-    this.selectedFile = null;
-  }
-
-  formatFileSize(bytes: number): string {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  }
-
-  canSave(): boolean {
-    return this.selectedFile !== null;
-  }
-
-  saveNewResult() {
-    if (!this.canSave()) {
-      return;
-    }
-
-    // Simular upload e processamento
-    // Em um cenário real, aqui seria feita a requisição para obter a URL pré-assinada
-    // e realizar o upload para AWS S3
-
-    // Gerar um novo ID para o resultado
-    const newId = 'REQ' + String(this.allResults.length + 1).padStart(3, '0');
-
-    // Lista de nomes familiares fictícios para teste
-    const familyNames = [
-      'Maria Silva Santos',
-      'João Pedro Oliveira',
-      'Ana Carolina Ferreira',
-      'Carlos Eduardo Lima',
-      'Fernanda Costa',
-      'Roberto Almeida',
-      'Juliana Rodrigues',
-      'Marcos Antonio',
-      'Camila Souza',
-      'Rafael Santos'
-    ];
-
-    // Selecionar um nome aleatório
-    const randomName = familyNames[Math.floor(Math.random() * familyNames.length)];
-
-    // Criar novo resultado
-    const newResult: ResultRequest = {
-      id: newId,
-      familyMember: randomName,
-      requestDate: new Date(),
-      processDate: null,
-      status: 'Processando'
-    };
-
-    // Adicionar à lista
-    this.allResults.unshift(newResult);
-    this.filteredResults = [...this.allResults];
-    this.updatePagination();
-
-    // Fechar modal e mostrar sucesso
-    this.showNewResultModal = false;
-    this.showSuccessModal = true;
-  }
-
-  returnToResults() {
-    this.showSuccessModal = false;
-    this.resetForm();
+    // Desenhar pontos dos dados
+    ctx.fillStyle = '#4ec5d9';
+    history.forEach((point, index) => {
+      const x = padding + (index * chartWidth) / (history.length - 1);
+      const y = padding + (yMax - point.value) * chartHeight / yRange;
+      
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, 2 * Math.PI);
+      ctx.fill();
+      
+      // Label da data no eixo X
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '10px Inter';
+      ctx.textAlign = 'center';
+      ctx.fillText(
+        point.date.toLocaleDateString('pt-BR'),
+        x,
+        canvas.height - 10
+      );
+      
+      // Valor do ponto
+      ctx.fillStyle = '#374151';
+      ctx.font = '10px Inter';
+      ctx.fillText(
+        point.value.toString(),
+        x,
+        y - 8
+      );
+    });
   }
 
   updatePagination() {
     this.totalPages = Math.ceil(this.filteredResults.length / this.itemsPerPage);
   }
 
-  get paginatedResults(): ResultRequest[] {
+  get paginatedResults(): ExamResult[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.filteredResults.slice(startIndex, endIndex);
@@ -322,6 +560,9 @@ export class ResultsComponent {
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
+      setTimeout(() => {
+        this.renderCharts();
+      }, 100);
     }
   }
 
@@ -345,7 +586,6 @@ export class ResultsComponent {
     return pages;
   }
 
-  // Método auxiliar para acessar Math no template
   mathMin(a: number, b: number): number {
     return Math.min(a, b);
   }
