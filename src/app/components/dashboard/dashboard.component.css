@@ -1,3 +1,4 @@
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
@@ -9,7 +10,7 @@
 .sidebar {
   width: 250px;
   background: white;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
   transition: width 0.3s ease;
   position: fixed;
   left: 0;
@@ -155,7 +156,7 @@
   right: 0;
   background: white;
   border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
   padding: 0.5rem 0;
   min-width: 150px;
   z-index: 1000;
@@ -186,69 +187,55 @@
   margin-bottom: 2rem;
 }
 
-/* Welcome Section Styles */
-.welcome-section {
-  margin-bottom: 2rem;
-}
-
-.welcome-card {
-  background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
-  border-radius: 16px;
-  padding: 2rem;
-  color: white;
-  position: relative;
-  overflow: hidden;
-}
-
-.welcome-content {
-  position: relative;
-  z-index: 2;
-}
-
-.welcome-text {
-  text-align: center;
-}
-
-.welcome-title {
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.2;
-}
-
-.user-nickname {
-  color: #ffd700;
-}
-
-.welcome-subtitle {
-  font-size: 1.1rem;
-  margin: 0 0 1.5rem 0;
-  opacity: 0.9;
-}
-
-.connect-doctor-btn {
-  background: white;
-  color: #5a67d8;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 25px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.connect-doctor-btn:hover {
-  transform: translateY(-2px);
-}
-
-
-
 /* Health Cards Styles */
 .health-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  max-width: 1200px;
+}
+
+.health-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.health-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-description {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #9ca3af;
+  flex: 1;
+}
+
+.card-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: #4ec5d9;
+  font-weight: 600;
+  margin-left: 1rem;
 }
 
 /* Responsive Design */
@@ -256,23 +243,23 @@
   .sidebar {
     transform: translateX(-100%);
   }
-
+  
   .sidebar.minimized {
     transform: translateX(-100%);
   }
-
+  
   .main-content {
     margin-left: 0;
   }
-
+  
   .main-content.sidebar-minimized {
     margin-left: 0;
   }
-
+  
   .health-cards-container {
     grid-template-columns: 1fr;
   }
-
+  
   .content-header h1 {
     font-size: 1.5rem;
   }
@@ -282,19 +269,228 @@
   .main-content {
     padding: 1rem;
   }
-
+  
   .health-card {
     padding: 1rem;
   }
-
+  
   .card-content {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.25rem;
   }
-
+  
   .card-value {
     margin-left: 0;
+  }
+}
+
+/* Genetics Section Styles */
+.genetics-section {
+  margin-top: 3rem;
+  max-width: 1200px;
+}
+
+.genetics-title {
+  color: #333;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.genetics-search {
+  margin-bottom: 1.5rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  max-width: 400px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 3rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  background: white;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #4ec5d9;
+  box-shadow: 0 0 0 3px rgba(78, 197, 217, 0.1);
+}
+
+.genetics-table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.genetics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+}
+
+.genetics-table th {
+  background: #f8fafc;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+}
+
+.genetics-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #6b7280;
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.genetics-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.genetics-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Result Badge Styles */
+.result-badge {
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+  display: inline-block;
+  min-width: 80px;
+}
+
+.result-normal {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.result-medio {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.result-medio-alto {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.result-alto {
+  background: #fecaca;
+  color: #991b1b;
+}
+
+.result-baixo {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+/* Pagination Styles */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #374151;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #f9fafb;
+  border-color: #4ec5d9;
+}
+
+.pagination-btn.active {
+  background: #4ec5d9;
+  color: white;
+  border-color: #4ec5d9;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* Responsive Design for Genetics Table */
+@media (max-width: 768px) {
+  .genetics-table-container {
+    overflow-x: auto;
+  }
+  
+  .genetics-table {
+    min-width: 600px;
+  }
+  
+  .genetics-table th,
+  .genetics-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.8rem;
+  }
+  
+  .result-badge {
+    min-width: 70px;
+    font-size: 0.75rem;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .pagination-info {
+    text-align: center;
+    font-size: 0.8rem;
   }
 }
 
@@ -445,11 +641,11 @@
   border-radius: 50%;
 }
 
-input:checked+.slider {
+input:checked + .slider {
   background-color: #4ec5d9;
 }
 
-input:checked+.slider:before {
+input:checked + .slider:before {
   transform: translateX(26px);
 }
 
@@ -463,19 +659,4 @@ input:checked+.slider:before {
 .chart-container canvas {
   width: 100%;
   height: auto;
-}
-
-.result-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid #e5e7eb;
-}
-
-.result-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
