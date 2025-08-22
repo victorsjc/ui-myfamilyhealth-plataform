@@ -77,8 +77,40 @@
       </div>
     </header>
 
-    <div class="content-header">
-    </div>
+    <!-- Landing Page de Boas-vindas -->
+    <section class="welcome-section">
+      <div class="welcome-card">
+        <div class="welcome-content">
+          <div class="welcome-text">
+            <h1 class="welcome-title">Seja bem-vindo, <span class="user-nickname">{{ userNickname }}</span></h1>
+            <p class="welcome-subtitle">Vamos cuidar da sua saúde</p>
+            <button class="connect-doctor-btn" routerLink="/exames">
+              Conectar ao Médico
+            </button>
+          </div>
+          <div class="welcome-image">
+            <div class="doctor-illustration">
+              <div class="doctor-figure">
+                <div class="doctor-head"></div>
+                <div class="doctor-body">
+                  <div class="stethoscope"></div>
+                  <div class="clipboard"></div>
+                </div>
+              </div>
+              <div class="medical-icons">
+                <div class="pill pill-1"></div>
+                <div class="pill pill-2"></div>
+                <div class="cross cross-1"></div>
+                <div class="cross cross-2"></div>
+                <div class="star star-1"></div>
+                <div class="star star-2"></div>
+                <div class="star star-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <div class="health-cards-container">
       <div class="health-card" *ngFor="let card of healthCards" (click)="openCardDetails(card)">
@@ -89,86 +121,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Seção Genéticos -->
-    <section class="genetics-section">
-      <h2 class="genetics-title">Genéticos</h2>
-
-      <div class="genetics-search">
-        <div class="search-input-wrapper">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
-            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <input 
-            type="text" 
-            placeholder="Filtrar por condição analisada..." 
-            [(ngModel)]="searchGenetics"
-            (input)="onSearchGenetics()"
-            class="search-input">
-        </div>
-      </div>
-
-      <div class="genetics-table-container">
-        <table class="genetics-table">
-          <thead>
-            <tr>
-              <th>Condição Analisada</th>
-              <th>Gene</th>
-              <th>SNP</th>
-              <th>Genótipo</th>
-              <th>Alelo Raro</th>
-              <th>Resultado</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let record of geneticsDisplayedData">
-              <td>{{ record.condition }}</td>
-              <td>{{ record.gene }}</td>
-              <td>{{ record.snp }}</td>
-              <td>{{ record.genotype }}</td>
-              <td>{{ record.rareAllele }}</td>
-              <td>
-                <span class="result-badge" [class]="getResultClass(record.result)">
-                  {{ record.result }}
-                </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Paginação Genéticos -->
-      <div class="pagination-container" *ngIf="geneticsTotalPages > 1">
-        <div class="pagination">
-          <button 
-            class="pagination-btn" 
-            [disabled]="geneticsCurrentPage === 1"
-            (click)="previousGeneticsPage()">
-            Anterior
-          </button>
-
-          <button 
-            *ngFor="let page of getGeneticsPageNumbers()"
-            class="pagination-btn"
-            [class.active]="page === geneticsCurrentPage"
-            (click)="goToGeneticsPage(page)">
-            {{ page }}
-          </button>
-
-          <button 
-            class="pagination-btn"
-            [disabled]="geneticsCurrentPage === geneticsTotalPages"
-            (click)="nextGeneticsPage()">
-            Próximo
-          </button>
-        </div>
-
-        <div class="pagination-info">
-          Mostrando {{ (geneticsCurrentPage - 1) * geneticsItemsPerPage + 1 }} - {{ mathMin(geneticsCurrentPage * geneticsItemsPerPage, filteredGeneticsData.length) }} de {{ filteredGeneticsData.length }} registros
-        </div>
-      </div>
-    </section>
   </main>
 </div>
 
