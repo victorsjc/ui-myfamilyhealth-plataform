@@ -49,7 +49,6 @@
   <main class="main-content" [class.sidebar-minimized]="sidebarMinimized">
     <!-- Header com perfil -->
     <header class="top-header">
-      <h1>Dashboard - Últimas Informações de Saúde</h1>
       <div class="user-profile" (click)="toggleProfileMenu()">
         <div class="user-avatar">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,24 +88,67 @@
             </button>
           </div>
           <div class="welcome-image">
-            <div class="doctor-illustration">
-              <div class="doctor-figure">
-                <div class="doctor-head"></div>
-                <div class="doctor-body">
-                  <div class="stethoscope"></div>
-                  <div class="clipboard"></div>
-                </div>
-              </div>
-              <div class="medical-icons">
-                <div class="pill pill-1"></div>
-                <div class="pill pill-2"></div>
-                <div class="cross cross-1"></div>
-                <div class="cross cross-2"></div>
-                <div class="star star-1"></div>
-                <div class="star star-2"></div>
-                <div class="star star-3"></div>
-              </div>
-            </div>
+            <svg class="doctor-avatar" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+              <!-- Background circle -->
+              <circle cx="100" cy="100" r="95" fill="#f0f8ff" stroke="#e1f3ff" stroke-width="2"/>
+              
+              <!-- Medical icons background -->
+              <circle cx="60" cy="50" r="8" fill="#ffebee" opacity="0.7"/>
+              <path d="M58 48h4M60 46v4" stroke="#e91e63" stroke-width="1.5" stroke-linecap="round"/>
+              
+              <circle cx="140" cy="60" r="6" fill="#e8f5e9" opacity="0.7"/>
+              <path d="M138 58h4M140 56v4" stroke="#4caf50" stroke-width="1.5" stroke-linecap="round"/>
+              
+              <rect x="45" y="130" width="12" height="8" rx="4" fill="#fff3e0" opacity="0.8"/>
+              <rect x="47" y="132" width="8" height="4" rx="2" fill="#ff9800"/>
+              
+              <rect x="150" y="140" width="12" height="8" rx="4" fill="#fce4ec" opacity="0.8"/>
+              <rect x="152" y="142" width="8" height="4" rx="2" fill="#e91e63"/>
+              
+              <!-- Doctor figure -->
+              <!-- Head -->
+              <circle cx="100" cy="75" r="20" fill="#fdbcb4"/>
+              
+              <!-- Hair -->
+              <path d="M85 60 C90 55, 110 55, 115 60 C115 65, 110 70, 100 70 C90 70, 85 65, 85 60 Z" fill="#8b4513"/>
+              
+              <!-- Face features -->
+              <circle cx="93" cy="72" r="2" fill="#333"/>
+              <circle cx="107" cy="72" r="2" fill="#333"/>
+              <path d="M98 78 Q100 82, 102 78" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              
+              <!-- White coat -->
+              <rect x="75" y="95" width="50" height="70" rx="5" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+              
+              <!-- Coat collar -->
+              <path d="M85 95 L95 105 L105 105 L115 95" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+              
+              <!-- Coat buttons -->
+              <circle cx="100" cy="110" r="2" fill="#ddd"/>
+              <circle cx="100" cy="125" r="2" fill="#ddd"/>
+              <circle cx="100" cy="140" r="2" fill="#ddd"/>
+              
+              <!-- Arms -->
+              <ellipse cx="65" cy="115" rx="12" ry="25" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+              <ellipse cx="135" cy="115" rx="12" ry="25" fill="white" stroke="#e0e0e0" stroke-width="1"/>
+              
+              <!-- Hands -->
+              <circle cx="60" cy="135" r="8" fill="#fdbcb4"/>
+              <circle cx="140" cy="135" r="8" fill="#fdbcb4"/>
+              
+              <!-- Stethoscope -->
+              <path d="M90 105 Q85 100, 85 110 Q85 115, 90 115" stroke="#333" stroke-width="2" fill="none"/>
+              <path d="M110 105 Q115 100, 115 110 Q115 115, 110 115" stroke="#333" stroke-width="2" fill="none"/>
+              <path d="M90 115 Q100 120, 110 115" stroke="#333" stroke-width="2" fill="none"/>
+              <circle cx="100" cy="118" r="4" fill="#333"/>
+              
+              <!-- Clipboard in hand -->
+              <rect x="135" y="125" width="12" height="16" rx="2" fill="#4ec5d9"/>
+              <rect x="136" y="126" width="10" height="12" fill="white"/>
+              <line x1="138" y1="128" x2="144" y2="128" stroke="#ddd" stroke-width="1"/>
+              <line x1="138" y1="131" x2="144" y2="131" stroke="#ddd" stroke-width="1"/>
+              <line x1="138" y1="134" x2="142" y2="134" stroke="#ddd" stroke-width="1"/>
+            </svg>
           </div>
         </div>
       </div>
