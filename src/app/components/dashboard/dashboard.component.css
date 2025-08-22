@@ -201,15 +201,12 @@
 }
 
 .welcome-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   position: relative;
   z-index: 2;
 }
 
 .welcome-text {
-  flex: 1;
+  text-align: center;
 }
 
 .welcome-title {
@@ -244,18 +241,7 @@
   transform: translateY(-2px);
 }
 
-.welcome-image {
-  flex: 0 0 200px;
-  height: 150px;
-  position: relative;
-}
 
-.doctor-avatar {
-  width: 100%;
-  height: 100%;
-  max-width: 200px;
-  max-height: 200px;
-}
 
 /* Health Cards Styles */
 .health-cards-container {
